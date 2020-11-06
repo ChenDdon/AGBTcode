@@ -4,5 +4,6 @@ Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers
 
 ---
 
+![model_framework](./model_framework.png)
 %%html
-<img src="model_framework.png", width=600, height=400>
+<img src="./model_framework.png", width=600, height=400>

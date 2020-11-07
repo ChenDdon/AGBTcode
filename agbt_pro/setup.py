@@ -22,9 +22,11 @@ extensions = [
         ],
         extra_compile_args=extra_compile_args
     )
-] + \
-    cythonize('fairseq/data/data_utils_fast.pyx') + \
-        cythonize('fairseq/data/token_block_utils_fast.pyx')
+]
+
+extensions = extensions \
+    + cythonize('fairseq/data/data_utils_fast.pyx') \
+        + cythonize('fairseq/data/token_block_utils_fast.pyx')
 
 
 setup(

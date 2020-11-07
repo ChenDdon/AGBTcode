@@ -5,5 +5,39 @@ Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers
 ---
 
 ![model_framework](./model_framework.png)
-%%html
-<img src="./model_framework.png", width=600, height=400>
+
+---
+
+## Requirments
+
+```ssh
+setuptools>=18.0
+python>=3.7
+pytorch>=1.2
+numpy
+rdkit
+scikit-learn
+```
+
+## Setup
+
+Download the 'agbt_pro' and build some necessary modules.
+
+```shell
+cd agbt_pro
+python setup.py build_ext --inplace
+```
+
+## Downloading Models
+
+Pre-trained model
+
+Fine-tuned model 1
+
+Fine-tuned model 2
+
+
+## Getting Started
+
+
+

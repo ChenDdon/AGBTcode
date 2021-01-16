@@ -36,9 +36,9 @@ Pre-trained model, self-supervised fine-tuned model, and supervised fine-tuned m
 ```shell
 # Pre-trained model
 wget https://weilab.math.msu.edu/checkpoint_pretrained.pt ./examples/models/
-# SSL fine-tuned model
+# Self-supervised learning (SSL) fine-tuned model for toxicity
 wget https://weilab.math.msu.edu/checkpoint_ssl_finetuned.pt ./examples/models/
-# Sequential fine-tuned model
+# Sequential supervied learning (SL) fine-tuned model for toxicity
 wget https://weilab.math.msu.edu/checkpoint_sequential_sl_finetuned.pt ./examples/models/
 ```
 

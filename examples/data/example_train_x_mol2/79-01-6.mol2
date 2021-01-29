@@ -1,0 +1,22 @@
+@<TRIPOS>MOLECULE
+title: molecule 1
+6   5    1
+SMALL
+USER_CHARGES
+
+
+@<TRIPOS>ATOM
+      1 Cl1         3.9547   -1.9987    0.1574 Cl        1 UNK        -0.0600 
+      2 C2          2.3984   -1.2548    0.1306 C.2       1 UNK         0.1200 
+      3 C3          1.2550   -1.9554    0.0716 C.2       1 UNK         0.0050 
+      4 Cl4         2.4742    0.4696    0.1875 Cl        1 UNK        -0.0600 
+      5 Cl5        -0.3087   -1.2230    0.0442 Cl        1 UNK        -0.1200 
+      6 H6          1.2516   -3.0349    0.0374 H         1 UNK         0.1150 
+@<TRIPOS>BOND
+     1    1    2 1    
+     2    2    3 2    
+     3    2    4 1    
+     4    3    5 1    
+     5    3    6 1    
+@<TRIPOS>SUBSTRUCTURE
+     1 UNK         1 GROUP             0       ****    0 ROOT    

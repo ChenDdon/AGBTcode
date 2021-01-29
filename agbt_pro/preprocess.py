@@ -82,14 +82,13 @@ def main(args):
             tgt_dict = None
 
     src_dict.save(dict_path(args.source_lang))
-    print([(i, src_dict.index(i)) for i in src_dict.symbols])
 
     if target and tgt_dict is not None:
         tgt_dict.save(dict_path(args.target_lang))
-        print([(i, tgt_dict.index(i)) for i in tgt_dict.symbols])
 
     def make_binary_dataset(vocab, input_prefix, output_prefix, lang, num_workers):
         print("| [{}] Dictionary: {} types".format(lang, len(vocab)))
+        print([(i, vocab.index(i)) for i in vocab.symbols])
         n_seq_tok = [0, 0]
         replaced = Counter()
 

@@ -39,30 +39,40 @@ which should install in about 60 seconds.
 
 ## Downloading Models
 
-Pre-trained model, self-supervised fine-tuned model, and supervised fine-tuned model are publicly available.
+Pre-trained model is publicly available.
 
 ```shell
 # Pre-trained model
 wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_pretrained.pt ./examples/models/
-# Self-supervised learning (SSL) fine-tuned model for toxicity
-wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_ssl_finetuned_4toxicity.pt ./examples/models/
-# Sequential supervied learning (SL) fine-tuned model for toxicity
-wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_sl_finetuned_4toxicity.pt ./examples/models/
-# Self-supervised learning (SSL) fine-tuned model for logP
-wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_ssl_finetuned_logp.pt ./examples/models/
-# Sequential supervied learning (SL) fine-tuned model for logP
-wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_sl_finetuned_logp.pt ./examples/models/
+```
+
+## Pre-training settings
+
+The pre-training dataset used in this work is ChEMBL26, which is available at chembl.gitbook.io/
+chembl-interface-documentation/downloads.
+
+There are 1936342 samples including in the ChEMBL26 dataset. We divided the dataset into a training set (1926342) and a valid set (10000) in this work. 
+
+```shell
+# Suppose the file name of the pre-training data are chembl26_train.smi and chembl26_valid.smi
+# First pre-processing
+python "./agbt_pro/preprocess.py" --only-source --trainpref "chembl26_train.smi" --validpref "chembl26_valid.smi" --destdir "./examples/data/chembl26/" --trainoutf "train" --validoutf "valid"  --workers 20 --file-format smiles
+
+# Pre-training command
+python "./agbt_pro/train.py" "./examples/data/chembl26/" --train-subset "train" --valid-subset "valid" --save-dir "./examples/models/" --task masked_lm --arch roberta_base --encoder-attention-heads 8 --encoder-embed-dim 512 --encoder-ffn-embed-dim 1024 --encoder-layers 8 --dropout 0.1 --attention-dropout 0.1 --criterion masked_lm --sample-break-mode complete --tokens-per-sample 256 --skip-invalid-size-inputs-valid-test --optimizer adam --adam-betas '(0.9,0.999)' --adam-eps 1e-6 --clip-norm 0.0 --lr-scheduler polynomial_decay --lr 0.0001 --weight-decay 0.1 --warmup-updates 5000 --total-num-update 1000000 --max-update 1000000 --save-interval 100 --save-interval-updates 100000 --log-format simple --log-interval 2000 --max-sentences 64 --update-freq 2 --ddp-backend no_c10d --fp16 --reset-optimizer --reset-dataloader --reset-meters
+
+# the pre-trained model will save as ./examples/data/chembl26/checkpoint_best.pt
 ```
 
 ## Reproduction instructions
 
-- The generated AGBT-FPs are avaliable at https://weilab.math.msu.edu/AGBT_Source/AGBT_FPs.tar.gz.
+- The generated AGBT-FPs are avaliable at https://weilab.math.msu.edu/AGBT_Source/AGBT_FPs.zip.
 
 ```shell
-wget https://weilab.math.msu.edu/AGBT_Source/AGBT_FPs.tar.gz
+wget https://weilab.math.msu.edu/AGBT_Source/AGBT_FPs.zip
 ```
 
-- The one of trained task-specific neural network-based model can be downloaded from https://weilab.math.msu.edu/AGBT_Source/downstream_nn_models.tar.gz. The GBDT model can be obtained within 10 minutes, and the specific parameters are shown in the "AGBT model parametrization" section (Table S3) of the Supporting Information. (Each dataset should be repeated 20 times applying different random numbers, so each dataset corresponds to 20 models.)
+- The one of trained task-specific neural network-based model can be downloaded from https://weilab.math.msu.edu/AGBT_Source/downstream_nn_models.tar.gz. The GBDT and RF model can be obtained within 10 minutes, and the specific parameters are shown in the "AGBT model parametrization" section (Table S3) of the Supporting Information. To eliminate systematic errors in the machine learning models, for each machine learning algorithm, the consensus of the predicted values from 20 different models (generated with different random seeds) was taken for each molecule. Note that the consensus value here refers to the average of the predicted results from different models for each molecule of each specific training-test splitting.
 
 ```shell
 wget https://weilab.math.msu.edu/AGBT_Source/downstream_nn_models.tar.gz
@@ -70,7 +80,8 @@ wget https://weilab.math.msu.edu/AGBT_Source/downstream_nn_models.tar.gz
 
 - All parameter settings for the training process can be referred to the "AGBT model parametrization" section in Supporting Information.
 
-## Customize a task-specific AGBT-FPs
+
+## Customize task-specific AGBT-FPs
 
 For users who want to build a new task-specific model from a set of molecules with corresponding properties, here we provide some scripts for generating AG-FPs, BT-FPs, and AGBT-FPs, respectively. By default, we use supervised learning-based strategy to fine-tune the pre-trained model. The example molecule includes the MOL2 file and the corresponding SMILES string. The following steps need to be performed on a platform that supports GPU computing.
 
@@ -111,4 +122,4 @@ For the data in the example, the entire process took less than 40 minutes.
 
 ## License
 
-All codes released in this study under the MIT License.
+All codes released in this study is under the MIT License.

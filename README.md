@@ -1,6 +1,6 @@
 # Algebraic Graph-assisted Bidirectional Transformers (AGBT)
 
-Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers for Molecular Prediction" by Dong Chen, Kaifu Gao, Duc Duy Nguyen, Xin Chen, Yi Jiang, Guo-Wei Wei<sup>+</sup> and Feng Pan\*
+Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers for Molecular Property Prediction" by Dong Chen, Kaifu Gao, Duc Duy Nguyen, Xin Chen, Yi Jiang, Guo-Wei Wei<sup>+</sup> and Feng Pan\*
 
 ---
 

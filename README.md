@@ -2,6 +2,7 @@
 
 Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers for Molecular Property Prediction" by Dong Chen, Kaifu Gao, Duc Duy Nguyen, Xin Chen, Yi Jiang, Guo-Wei Wei<sup>+</sup> and Feng Pan\*
 
+## The source code for the work of "Extracting Predictive Representations from Hundreds of Millions of Molecules" by Dong Chen, Guo-Wei Wei and Feng Pan is available from https://github.com/ChenDdon/SourceForPub/tree/main/BTcode
 ---
 
 ![model_framework](./model_framework.png)

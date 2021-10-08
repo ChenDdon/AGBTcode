@@ -33,6 +33,7 @@ Install from Github
 git clone https://github.com/ChenDdon/AGBTcode.git
 cd AGBTcode/agbt_pro
 python setup.py build_ext --inplace
+mv ./agbt_pro/fairseq/data/* ./fairseq/data/
 ```
 
 which should install in about 60 seconds.

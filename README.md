@@ -2,7 +2,6 @@
 
 Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers for Molecular Property Prediction" by Dong Chen, Kaifu Gao, Duc Duy Nguyen, Xin Chen, Yi Jiang, Guo-Wei Wei<sup>+</sup> and Feng Pan\*
 
-## The source code for the work of "Extracting Predictive Representations from Hundreds of Millions of Molecules" by Dong Chen, Guo-Wei Wei and Feng Pan is available from https://github.com/ChenDdon/SourceForPub/tree/main/BTcode
 ---
 
 ![model_framework](./model_framework.png)
@@ -39,7 +38,7 @@ mv ./agbt_pro/fairseq/data/* ./fairseq/data/
 
 which should install in about 60 seconds.
 
-## Downloading Models
+## Downloading Pre-trained Models
 
 Pre-trained model is publicly available.
 
@@ -50,8 +49,7 @@ wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_pretrained.pt ./examples
 
 ## Pre-training settings
 
-The pre-training dataset used in this work is ChEMBL26, which is available at chembl.gitbook.io/
-chembl-interface-documentation/downloads.
+The pre-training dataset used in this work is ChEMBL26, which is available at chembl.gitbook.io/chembl-interface-documentation/downloads.
 
 There are 1936342 samples including in the ChEMBL26 dataset. We divided the dataset into a training set (1926342) and a valid set (10000) in this work. 
 

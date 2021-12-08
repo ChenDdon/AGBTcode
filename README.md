@@ -92,9 +92,12 @@ For users who want to build a new task-specific model from a set of molecules wi
 wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_pretrained.pt ./examples/models/
 
 # step 2, pre-process input data (Binarize the input data to speed up the training.)
+mkdir "./examples/data/input0"
 python "./agbt_pro/preprocess.py" --only-source --trainpref "./examples/data/example_train_canonical.smi" --validpref "./examples/data/example_valid_canonical.smi" --destdir "./examples/data/input0/" --trainoutf "train" --validoutf "valid"  --workers 20 --file-format smiles --srcdict "./examples/data/input0/dict.txt"
 
 # step 3, fine-tuning the pre-trained model
+mkdir "./examples/data/label"
+cp {"./examples/data/example_train.label","./examples/data/example_train.label"} "./examples/data/label/"
 python "./agbt_pro/train.py" "./examples/data/" --save-dir "./examples/models/" --train-subset train --valid-subset valid --restore-file "./examples/models/checkpoint_pretrained.pt" --task sentence_prediction --num-classes 1 --regression-target --init-token 0 --best-checkpoint-metric loss --arch roberta_base --bpe smi --encoder-attention-heads 8 --encoder-embed-dim 512 --encoder-ffn-embed-dim 1024 --encoder-layers 8 --dropout 0.1 --attention-dropout 0.1  --criterion sentence_prediction --max-positions 256 --truncate-sequence --skip-invalid-size-inputs-valid-test --optimizer adam --adam-betas '(0.9,0.999)' --adam-eps 1e-6 --clip-norm 0.0 --lr-scheduler polynomial_decay --lr 0.0001 --warmup-updates 500 --total-num-update 5000 --weight-decay 0.1 --max-update 5000 --log-format simple --reset-optimizer --reset-dataloader --reset-meters --no-epoch-checkpoints --no-last-checkpoints --no-save-optimizer-state --find-unused-parameters --log-interval 50 --max-sentences 64 --update-freq 2 --required-batch-size-multiple 1 --ddp-backend no_c10d --fp16 --max-epoch 5000
 
 # step 4, generate BT-FPs

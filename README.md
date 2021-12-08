@@ -97,16 +97,19 @@ python "./agbt_pro/preprocess.py" --only-source --trainpref "./examples/data/exa
 
 # step 3, fine-tuning the pre-trained model
 mkdir "./examples/data/label"
-cp {"./examples/data/example_train.label","./examples/data/example_train.label"} "./examples/data/label/"
+cp "./examples/data/example_train.label" "./examples/data/label/train.label"
+cp "./examples/data/example_valid.label" "./examples/data/label/valid.label"
 python "./agbt_pro/train.py" "./examples/data/" --save-dir "./examples/models/" --train-subset train --valid-subset valid --restore-file "./examples/models/checkpoint_pretrained.pt" --task sentence_prediction --num-classes 1 --regression-target --init-token 0 --best-checkpoint-metric loss --arch roberta_base --bpe smi --encoder-attention-heads 8 --encoder-embed-dim 512 --encoder-ffn-embed-dim 1024 --encoder-layers 8 --dropout 0.1 --attention-dropout 0.1  --criterion sentence_prediction --max-positions 256 --truncate-sequence --skip-invalid-size-inputs-valid-test --optimizer adam --adam-betas '(0.9,0.999)' --adam-eps 1e-6 --clip-norm 0.0 --lr-scheduler polynomial_decay --lr 0.0001 --warmup-updates 500 --total-num-update 5000 --weight-decay 0.1 --max-update 5000 --log-format simple --reset-optimizer --reset-dataloader --reset-meters --no-epoch-checkpoints --no-last-checkpoints --no-save-optimizer-state --find-unused-parameters --log-interval 50 --max-sentences 64 --update-freq 2 --required-batch-size-multiple 1 --ddp-backend no_c10d --fp16 --max-epoch 5000
 
 # step 4, generate BT-FPs
-python "./agbt_pro/generate_bt_fps.py" --model_name_or_path "./examples/models/" --checkpoint_file "checkpoint.pt" --data_name_or_path  "./examples/data/" --dict_file "./example/data/dict.txt" --target_file "./examples/data/example_train_canonical.smi" --save_feature_path "./examples/BT_FPs/examples_bt_train_features.npy"
-python "./agbt_pro/generate_bt_fps.py" --model_name_or_path "./examples/models/" --checkpoint_file "checkpoint.pt" --data_name_or_path  "./examples/data/" --dict_file "./example/data/dict.txt" --target_file "./examples/data/example_valid_canonical.smi" --save_feature_path "./examples/BT_FPs/examples_bt_valid_features.npy"
+mkdir "./examples/BT_FPs/"
+python "./agbt_pro/generate_bt_fps.py" --model_name_or_path "./examples/models/" --checkpoint_file "checkpoint_best.pt" --data_name_or_path  "./examples/data/" --dict_file "./examples/data/dict.txt" --target_file "./examples/data/example_train_canonical.smi" --save_feature_path "./examples/BT_FPs/examples_bt_train_features.npy"
+python "./agbt_pro/generate_bt_fps.py" --model_name_or_path "./examples/models/" --checkpoint_file "checkpoint_best.pt" --data_name_or_path  "./examples/data/" --dict_file "./examples/data/dict.txt" --target_file "./examples/data/example_valid_canonical.smi" --save_feature_path "./examples/BT_FPs/examples_bt_valid_features.npy"
 ```
 
 ```shell
 ## Generate Algebraic Graph-based Fingerprints (AG-FPs)
+mkdir "./examples/AG_FPs/"
 
 # step 1. Laplacian, Lorentz
 python "./ag_pro/AG_main.py" --dataset_prefix 'example_train' --dataset_path './examples/data/example_train_x_mol2' --dataset_id_path './examples/data/example_train.id' --save_feature_path_prefix './examples/AG_FPs' --matrix_type 'Lap' --kernal_type 'Lorentz' --kernal_tau 0.5 --kernal_parameter 10.0
@@ -116,9 +119,12 @@ python "./ag_pro/AG_main.py" --dataset_prefix 'example_train' --dataset_path './
 python "./ag_pro/AG_main.py" --dataset_prefix 'example_valid' --dataset_path './examples/data/example_valid_x_mol2' --dataset_id_path './examples/data/example_valid.id' --save_feature_path_prefix './examples/AG_FPs' --matrix_type 'Lap' --kernal_type 'Exponential' --kernal_tau 0.5 --kernal_parameter 20.0
 ```
 
+Note: The "kernal_type", "kernal_tau", and "kernal_parameter" can be modified according to the performance for a specific task.
+
 ```shell
 ## Generate algebraic graph-assisted bidirectional transformer-based Fingerprints (AGBT-FPs)
-python "./agbt_pro/feature_analysis.py" --train_x_f1 "./example/AG_FPs/example_train_Lap_Lorentz_10.0_tau_0.5.npy" --train_x_f2 "./example/AG_FPs/example_train_Lap_Exponential_20.0_tau_0.5.npy" --train_x_f3 "./example/BT_FPs/examples_bt_valid_features.npy" --train_y "./example/example_train_y.npy" --test_x_f1 "./example/AG_FPs/example_valid_Lap_Lorentz_10.0_tau_0.5.npy" --test_x_f2 "./example/AG_FPs/example_valid_Lap_Exponential_20.0_tau_0.5.npy" --test_x_f3 "./example/BT_FPs/examples_bt_valid_features.npy" --test_y "./example/logp_FDA_label.npyexample_valid_y.npy" --features_norm --save_folder_path "./example/AGBT-FPs/" --n_estimators 10000 --n_workers -1 --max_depth 7 --min_samples_split 3 --random_seed 1234 --n_select_features 512
+mkdir "./examples/AGBT-FPs/"
+python "./agbt_pro/feature_analysis.py" --train_x_f1 "./examples/AG_FPs/example_train_Lap_Lorentz_10.0_tau_0.5.npy" --train_x_f2 "./examples/AG_FPs/example_train_Lap_Exponential_20.0_tau_0.5.npy" --train_x_f3 "./examples/BT_FPs/examples_bt_train_features.npy" --train_y "./examples/data/example_train_y.npy" --test_x_f1 "./examples/AG_FPs/example_valid_Lap_Lorentz_10.0_tau_0.5.npy" --test_x_f2 "./examples/AG_FPs/example_valid_Lap_Exponential_20.0_tau_0.5.npy" --test_x_f3 "./examples/BT_FPs/examples_bt_valid_features.npy" --test_y "./examples/data/logp_FDA_label.npyexample_valid_y.npy" --features_norm --save_folder_path "./examples/AGBT-FPs/" --n_estimators 10000 --n_workers -1 --max_depth 7 --min_samples_split 3 --random_seed 1234 --n_select_features 512
 ```
 
 For the data in the example, the entire process took less than 40 minutes.

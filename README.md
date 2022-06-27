@@ -132,6 +132,7 @@ For the data in the example, the entire process took less than 40 minutes.
 ## Note
 
 (Update: 2021-11) For those interested in pre-trained models **(BT-FPs)**, we provide three recent updates pre-trained models. These include those based on Chembl27(1.9 million), PubChem(over 0.1 billion), and ZINC (over 0.6 billion) datasets. The source code and models are publicly abailable at https://github.com/WeilabMSU/PretrainModels
+
 (Update: 2022-06) The data used in this work has been migrated. The Users can download the datasets at https://weilab.math.msu.edu/DataLibrary/3D/.
 
 

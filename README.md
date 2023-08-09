@@ -32,6 +32,9 @@ Install from Github
 ```shell
 git clone https://github.com/ChenDdon/AGBTcode.git
 cd AGBTcode/agbt_pro
+mkdir agbt_pro
+mkdir agbt_pro/fairseq
+mkdir agbt_pro/fairseq/data
 python setup.py build_ext --inplace
 mv ./agbt_pro/fairseq/data/* ./fairseq/data/
 ```

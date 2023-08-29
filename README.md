@@ -8,6 +8,33 @@ Implementation of the paper "Algebraic Graph-assisted Bidirectional Transformers
 
 ---
 
+## <span style="color: red;">New interface (update: 08-2023) </span> 
+
+> New Feature: If you're just trying to get molecular features based on deep networks, the following process eliminates the need to compile the code base.
+
+Python Dependencies (Higher version should be find):
+  - python                    3.9.12
+  - pytorch                   1.13.1
+  - fairseq                   0.12.2
+  - numpy                     1.21.5
+
+> Once python's dependece is satisfied, there is no need to compile the entire code base.
+
+```shell
+# Pre-trained model
+wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_pretrained.pt ./examples/models/
+
+# generate the feature
+# '--feature_type': 'bos' for the begin of sequence symbol's embedding; 'avg' for the average of the all symbols embedding.
+python "./agbt_pro/generate_bt_fps_new.py" --model_name_or_path "./examples/models/" --checkpoint_file "checkpoint_best.pt" --smi_file "./examples/data/example_train_canonical.smi" --save_feature_path "./examples/BT_FPs/examples_bt_train_features.npy" --feature_type bos
+```
+
+New interface is also updated in [here](https://github.com/WeilabMSU/PretrainModels)
+
+---
+
+---
+
 ## Requirments
 
 OS Requirements
@@ -48,6 +75,7 @@ Pre-trained model is publicly available.
 ```shell
 # Pre-trained model
 wget https://weilab.math.msu.edu/AGBT_Source/checkpoint_pretrained.pt ./examples/models/
+
 ```
 
 ## Pre-training settings
@@ -132,6 +160,7 @@ python "./agbt_pro/feature_analysis.py" --train_x_f1 "./examples/AG_FPs/example_
 
 For the data in the example, the entire process took less than 40 minutes.
 
+<a name="Note"></a>
 ## Note
 
 (Update: 2021-11) For those interested in pre-trained models **(BT-FPs)**, we provide three recent updates pre-trained models. These include those based on Chembl27(1.9 million), PubChem(over 0.1 billion), and ZINC (over 0.6 billion) datasets. The source code and models are publicly abailable at https://github.com/WeilabMSU/PretrainModels
